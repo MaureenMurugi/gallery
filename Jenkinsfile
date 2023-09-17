@@ -3,7 +3,7 @@ pipeline {
     tools {
         nodejs "Node-JS"
     }
-    
+
     stages {
         stage('Cloning the Git Gallery Repo') {
             steps {
@@ -11,7 +11,7 @@ pipeline {
                 git "https://github.com/MaureenMurugi/gallery.git"
             }
         }
-        
+
         stage('Install Dependencies') {
             steps {
                 // Run npm install to install project dependencies
@@ -19,17 +19,22 @@ pipeline {
             }
         }
 
-        stage('Run Tests'){
+        stage('Run Tests') {
             steps {
                 // Run npm tests to run the tests defined
                 sh 'npm test'
             }
         }
-        
-        //stage('Deploy to Render') {
-            //Steps {
-                // Start the server on Render using 'node server'
-                //sh 'node server'
-            //}
+    }
+
+    post {
+        always {
+            // Send an email notification when the pipeline completes (both success and failure cases)
+            emailext(
+                subject: "Pipeline ${currentBuild.result}: ${currentBuild.fullDisplayName}",
+                body: "The Jenkins pipeline has completed. Result: ${currentBuild.result}",
+                to: "your-email@example.com" // Replace with the recipient's email address
+            )
         }
     }
+}
