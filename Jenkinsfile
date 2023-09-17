@@ -29,11 +29,19 @@ pipeline {
 
     post {
         always {
+            // Get the Jenkins build URL and Render site URL using environment variables
+            def jenkinsBuildURL = env.BUILD_URL
+            
+
             // Send an email notification when the pipeline completes (both success and failure cases)
             emailext(
                 subject: "Pipeline ${currentBuild.result}: ${currentBuild.fullDisplayName}",
-                body: "The Jenkins pipeline has completed. Result: ${currentBuild.result}",
-                to: "murugimaureen99@gmail.com" 
+                body: """
+                    The Jenkins pipeline has completed. Result: ${currentBuild.result}
+                    Build ID: ${env.BUILD_ID}
+                    Jenkins Build URL: ${jenkinsBuildURL}
+                """,
+                to: "murugimaureen99@gmail.com"
             )
         }
     }
