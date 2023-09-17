@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 describe('Photos', function(){
 
 
-    it('should list ALL photos on / GET', function(done){
+    it('should list ALL photos on / GET', function(){
         this.timeout(60000);
         chai.request(server)
         .get('/')
@@ -20,7 +20,6 @@ describe('Photos', function(){
             res.should.have.status(200);
             res.should.be.html;
             res.body.should.be.a('object')
-            done();
         })
     });
 })
